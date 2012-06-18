@@ -9,7 +9,7 @@ sheet_z=180;
 // Pulley dimensions
 pulley_max_r=255.2446; //1.0049"
 pulley_hole_r=41.8338; //0.1647"
-pulley_base_z=50.46;//sheet -.51" or 12.954mm
+pulley_base_z=50.46;//sheet -(.51" or 12.954mm)
 
 // Pulley male half dimensions
 pulley_male_r=102.5398; //0.4037"
@@ -23,28 +23,6 @@ pulley_female__r_i=101.5492; //0.3998"
 //Difference renders incorrectly otherwise
 render(convexity = 10){
 
-difference()
-{
-  union(){
-    // Pulley half base cylinder
-    translate([0,0,pulley_base_z/2])
-    {
-      cylinder(pulley_base_z, r = pulley_max_r, center = true);
-    }
-
-    // Pulley male half central cylinder
-    translate([0,0,sheet_z/2])
-    {
-      cylinder(sheet_z, r = pulley_male_r, center = true);
-    }
-  }//end union
-  
-  // Pulley half hole
-  translate([0,0,sheet_z/2])
-  {
-    cylinder(sheet_z, r = pulley_hole_r, center = true);
-  }
-
-}//end difference
+rotate_extrude($fn=200) polygon(points=[[pulley_hole_r,0], [pulley_hole_r,180],[pulley_male_r,180],[pulley_male_r,pulley_base_z],[pulley_max_r,pulley_base_z],[pulley_max_r,0],[pulley_hole_r,0]]);
 
 }
