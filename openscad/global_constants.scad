@@ -5,3 +5,11 @@
 
 // Sheet dimensions
 sheet_z=180;
+medievaltometric=254;
+metrictomedieval=.0039370078;
+
+// Use the metric system by default
+// units="medieval";
+units="metric";
+
+
