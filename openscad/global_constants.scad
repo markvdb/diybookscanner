@@ -14,6 +14,11 @@ module routing_circle(x,y){
   translate([x,y]) linear_extrude(height=sheet_z) circle(cnc_circle_r);
 }
 
+bolt_circle_r=41.0210;
+module bolt_circle(x,y){
+  translate([x,y]) linear_extrude(height=sheet_z) circle(bolt_circle_r);
+}
+
 //Conversion
 medievaltometric=254;
 metrictomedieval=.0039370078;
