@@ -1,0 +1,40 @@
+These are the Canon firmware settings I use on my Canon A2200 camera. Turn your camera wheel to P mode and adjust.
+
+Capture settings
+================
+* AF Frame: center
+* AF Frame size: normal
+* Digital Zoom: off
+* AF-Point zoom: off
+* Servo AF: off
+* AF-assist beam: off
+* Flash settings:
+ * Red-Eye Corr.: off
+ * Red-Eye Lamp: off
+* i-Contrast: off
+* Review: off
+* Blink Detection: off
+* Disp. Overlay: off
+* Date Stamp: off
+
+General settings
+================
+* mute: off
+* volume:
+ * start-up vol.: max (you want some confirmation that it's working!)
+ * operation vol.: max
+ * selftimer vol.: max
+ * shutter volume: max (you want some confirmation that it's working!)
+* hints & tips: off
+* LCD brightness: max (I have an AC adapter. If you don't, you might want to change this.)
+* start-up image: none (might save a few extra bytes of camera memory?)
+* file numbering: continuous (consistence when downloading)
+* create folder: monthly (as little as possible)
+* lens retract: 1 min. (as long as possible)
+* power saving:
+ * auto power down: off (I have an AC adapter. If you don't, you might want to change this.)
+ * display off: 3 min. (as long as possible)
+
+Various hints
+=============
+* Make sure you have enough light when testing, or the camera might refuse to capture!!!
