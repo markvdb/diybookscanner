@@ -27,9 +27,10 @@ do
   if [ -z "$shoot" ]; then
     echo "Foot pedal not pressed for $TMOUT seconds. Downloading images and deleting from cameras..."
     echo "Downloading images from $CAM1"
-    echo "TODO: gphoto2 processes end with -1 unexpected result even though everything seems to be fine -> && part doesn't run"
+    # gphoto2 processes end with -1 unexpected result even though everything seems to be fine
     gphoto2 --port $GPHOTOCAM1 -P A/store_00010001/DCIM/100___01gphoto2 --port $GPHOTOCAM1 --recurse -D A/store00010001/DCIM/
     RETVAL = $?
+    # wait for gphoto2 download process to finish
     [ $RETVAL -eq -1 ] && gphoto2 --port $GPHOTOCAM1 --recurse -D A/store00010001/DCIM/
     echo "Downloading images from $CAM2"
     gphoto2 --port $GPHOTOCAM2 -P A/store_00010001/DCIM/100___01
