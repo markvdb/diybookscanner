@@ -6,8 +6,8 @@ PTPCAM='/usr/src/ptpcam/ptpcam'
 GPHOTOCAM1=$(gphoto2 --auto-detect|grep usb|sed -e 's/.*Camera *//g'|head -n1)
 GPHOTOCAM2=$(gphoto2 --auto-detect|grep usb|sed -e 's/.*Camera *//g'|tail -n1)
 
-CAM1=$(echo GPHOTOCAM1|sed -e 's/.*,//g')
-CAM2=$(echo GPHOTOCAM2|sed -e 's/.*,//g')
+CAM1=$(echo $GPHOTOCAM1|sed -e 's/.*,//g')
+CAM2=$(echo $GPHOTOCAM2|sed -e 's/.*,//g')
 
 echo "Found cameras: $GPHOTOCAM1 $GPHOTOCAM2"
 
