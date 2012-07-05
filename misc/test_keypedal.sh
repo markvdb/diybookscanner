@@ -48,7 +48,7 @@ echo "Starting foot pedal loop..."
 while true
 do
   read -n1 shoot
-  if [ "$shoot" == "s" ]; then
+  if [ "$shoot" == "b" ]; then
     echo "Key pressed."
     echo "Shooting with cameras $CAM1 and $CAM2"
     $PTPCAM --dev=$CAM1 --chdk='lua shoot()'
