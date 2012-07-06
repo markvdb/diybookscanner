@@ -5,9 +5,9 @@ What is this?
 -------------
 This is a description of the Canon firmware settings I use with my Canon A2200 camera with firmware 1.00d.
 
-I've more or less successfully used CHDK 1.0.0 r1825 build for the Canon A2200 1.00d (build date 2012/04/27), as found on the CHDK forums. I've dumped a copy (DISKBOOT.BIN) in this repository.
+I've more or less successfully used [CHDK 1.0.0 r1825 build for the Canon A2200 1.00d](http://github.com/markvdb/diybookscanner/misc/DISKBOOT.BIN) (build date 2012/04/27), as found on the CHDK forums. I've dumped a copy (DISKBOOT.BIN) in this repository.
 
-Success for me means reliable remote shooting with two cameras simultaneously using lua shoot() commands over ptp using ptpcam on Debian. Gphoto2 is then used for downloading and deleting from the camera's sd card. See test_keypedal.sh for a crude script that I hacked together to use with my book scanner.
+Success for me means reliable remote shooting with two cameras simultaneously using lua shoot() commands over ptp using ptpcam on Debian. Gphoto2 is then used for downloading and deleting from the camera's sd card. See [test_keypedal.sh](http://github.com/markvdb/diybookscanner/misc/test_keypedal.sh) for a crude script that I hacked together to use with my book scanner.
 
 The limitation seems to be focus distance overrides. If you want to override the autofocus distance, set the autofocus lock first, or the firmware will crash:
  * go to official Canon mode by pressing smiley face button if necessary
