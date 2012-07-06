@@ -7,7 +7,7 @@ This is a description of the Canon firmware settings I use with my Canon A2200 c
 
 I've more or less successfully used CHDK 1.0.0 r1825 build for the Canon A2200 1.00d (build date 2012/04/27), as found on the CHDK forums.
 
-Success for me means reliable remote shooting with two cameras simultaneously using lua shoot() commands over ptp using ptpcam. Gphoto2 is then used for downloading and deleting from the camera's sd card. See test_keypedal.sh for a crude script that I hacked together to use with my book scanner.
+Success for me means reliable remote shooting with two cameras simultaneously using lua shoot() commands over ptp using ptpcam on Debian. Gphoto2 is then used for downloading and deleting from the camera's sd card. See test_keypedal.sh for a crude script that I hacked together to use with my book scanner.
 
 The limitation seems to be focus distance overrides. If you want to override the autofocus distance, set the autofocus lock first, or the firmware will crash:
  * go to official Canon mode by pressing smiley face button if necessary
@@ -16,7 +16,7 @@ The limitation seems to be focus distance overrides. If you want to override the
  * keep shutter button half pressed, press tulip button
 
 
-The more recent CHDK 1.1.0 r19xx, build date 2012/07/02 seems to crash hard when trying to lua shoot() over ptp.
+The more recent CHDK 1.1.0 r19xx, build date 2012/07/02, as found on the CHDK forums, seems to crash hard when trying to lua shoot() over ptp.
 
 Turn your camera wheel to P mode and adjust to the settings below.
 
