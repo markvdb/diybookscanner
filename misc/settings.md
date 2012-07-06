@@ -5,7 +5,7 @@ What is this?
 -------------
 This is a description of the Canon firmware settings I use with my Canon A2200 camera with firmware 1.00d.
 
-I've more or less successfully used CHDK 1.0.0 r1825 build for the Canon A2200 1.00d (build date 2012/04/27), as found on the CHDK forums.
+I've more or less successfully used CHDK 1.0.0 r1825 build for the Canon A2200 1.00d (build date 2012/04/27), as found on the CHDK forums. I've dumped a copy (DISKBOOT.BIN) in this repository.
 
 Success for me means reliable remote shooting with two cameras simultaneously using lua shoot() commands over ptp using ptpcam on Debian. Gphoto2 is then used for downloading and deleting from the camera's sd card. See test_keypedal.sh for a crude script that I hacked together to use with my book scanner.
 
@@ -61,5 +61,7 @@ Various hints
 
 See also
 --------
+* http://github.com/markvdb/diybookscanner/misc/DISKBOOT.BIN : copy of the Canon PowerShot A2200 1.00d CHDK firmware r1825 (build date 2012/04/27)
+* http://github.com/markvdb/diybookscanner/misc/test_keypedal.sh : basic script for triggering the two PowerShot A2200 cameras on my book scanner
 * http://chdk.wikia.com/wiki/A2200 : CHDK on A2200 status page
 * http://chdk.setepontos.com/index.php?topic=6254.0 : CHDK forum A2200 topic
