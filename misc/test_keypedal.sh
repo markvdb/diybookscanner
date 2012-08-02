@@ -32,6 +32,14 @@ function switch_to_record_mode {
   $PTPCAM --dev=$CAM2 --chdk='mode 1' > /dev/null 2>&1
 }
 
+
+function set_zoom {
+  echo "Setting cameras zoom to 3..."
+  $PTPCAM --dev=$CAM1 --chdk='lua set_zoom(3)' && sleep 0.5
+  $PTPCAM --dev=$CAM2 --chdk='lua set_zoom(3)' && sleep 0.5
+}
+
+
 function download_from_cams {
     echo "Downloading images from $CAM1..."
     # gphoto2 processes end with -1 unexpected result even though everything seems to be fine -> hack: true gives exit status 0
@@ -43,6 +51,7 @@ function download_from_cams {
 detect_cams
 # delete_from cams confuses ptpcam -> do that at the end
 switch_to_record_mode
+set_zoom
 
 echo "Starting foot pedal loop..."
 while true
