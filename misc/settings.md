@@ -3,7 +3,7 @@ Canon PowerShot A2200 1.00d settings
 
 What is this?
 -------------
-This is a description of the Canon firmware settings I use with my Canon A2200 camera with firmware 1.00d.
+This is a description of the Canon firmware settings we at [http://diybookscanner.eu] use with Canon A2200 cameras with firmware 1.00d.
 
 I've more or less successfully used [CHDK 1.0.0 r1825 build for the Canon A2200 1.00d](https://github.com/markvdb/diybookscanner/blob/master/misc/DISKBOOT.BIN) (build date 2012/04/27), as found on the CHDK forums. I've dumped a copy (DISKBOOT.BIN) in this repository.
 
