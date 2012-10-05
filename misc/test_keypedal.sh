@@ -87,11 +87,17 @@ function flash_off {
 
 function download_from_cams {
     echo "Downloading images from $CAM1..."
+    mkdir -p left
+    cd left
     $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(6)'
     # gphoto2 processes end with -1 unexpected result even though everything seems to be fine -> hack: true gives exit status 0
     gphoto2 --port $LEFTCAMLONG -P A/store_00010001/DCIM/; true
+    cd ..
+    mkdir -p right
+    cd right
     echo "Downloading images from $CAM2"
     gphoto2 --port $RIGHTCAMLONG -P A/store_00010001/DCIM/; true 
+    cd ..
 }
 
 # The action starts here
