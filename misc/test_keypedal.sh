@@ -3,6 +3,7 @@
 LANG=C
 PTPCAM='/usr/bin/ptpcam'
 TMOUT=15
+TIMESTAMP=$(date +%Y%m%d%H%M)
 
 function detect_cams {
   CAMS=$(gphoto2 --auto-detect|grep usb| wc -l)
@@ -87,17 +88,22 @@ function flash_off {
 
 function download_from_cams {
     echo "Downloading images from $CAM1..."
-    mkdir -p left
-    cd left
+    mkdir -p bookscan_$TIMESTAMP/left bookscan_$TIMESTAMP/right
+    cd bookscan_$TIMESTAMP/left
     $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(6)'
     # gphoto2 processes end with -1 unexpected result even though everything seems to be fine -> hack: true gives exit status 0
     gphoto2 --port $LEFTCAMLONG -P A/store_00010001/DCIM/; true
-    cd ..
-    mkdir -p right
-    cd right
+    cd ../right
     echo "Downloading images from $CAM2"
     gphoto2 --port $RIGHTCAMLONG -P A/store_00010001/DCIM/; true 
     cd ..
+}
+
+function set_iso {
+    echo "Setting ISO mode to 1 for left cam."
+    ptpcam --dev=$LEFTCAM --chdk="lua set_iso_mode(1)"
+    echo "Setting ISO mode to 1 for right cam."
+    ptpcam --dev=$RIGHTCAM --chdk="lua set_iso_mode(1)"
 }
 
 # The action starts here
@@ -107,6 +113,7 @@ detect_cams
 switch_to_record_mode
 set_zoom
 flash_off
+set_iso
 
 echo "Starting foot pedal loop..."
 $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
