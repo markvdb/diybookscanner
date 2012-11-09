@@ -101,9 +101,9 @@ function download_from_cams {
 
 function set_iso {
     echo "Setting ISO mode to 1 for left cam."
-    ptpcam --dev=$LEFTCAM --chdk="lua set_iso_mode(1)"
+    ptpcam --dev=$LEFTCAM --chdk="lua set_iso_real(50)"
     echo "Setting ISO mode to 1 for right cam."
-    ptpcam --dev=$RIGHTCAM --chdk="lua set_iso_mode(1)"
+    ptpcam --dev=$RIGHTCAM --chdk="lua set_iso_real(50)"
 }
 
 # The action starts here
