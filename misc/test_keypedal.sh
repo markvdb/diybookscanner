@@ -88,7 +88,7 @@ function flash_off {
 
 function download_from_cams {
     echo "Downloading images from $CAM1..."
-    mkdir -p bookscan_$TIMESTAMP/left bookscan_$TIMESTAMP/right
+    mkdir -p ~/bookscan_$TIMESTAMP/left ~/bookscan_$TIMESTAMP/right
     cd bookscan_$TIMESTAMP/left
     $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(6)'
     # gphoto2 processes end with -1 unexpected result even though everything seems to be fine -> hack: true gives exit status 0
