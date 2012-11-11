@@ -88,8 +88,8 @@ function flash_off {
 
 function download_from_cams {
     echo "Downloading images from $CAM1..."
-    mkdir -p bookscan_$TIMESTAMP/left bookscan_$TIMESTAMP/right
-    cd bookscan_$TIMESTAMP/left
+    mkdir -p ~/bookscan_$TIMESTAMP/left ~/bookscan_$TIMESTAMP/right
+    cd ~/bookscan_$TIMESTAMP/left
     $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(6)'
     # gphoto2 processes end with -1 unexpected result even though everything seems to be fine -> hack: true gives exit status 0
     gphoto2 --port $LEFTCAMLONG -P A/store_00010001/DCIM/; true
@@ -101,9 +101,9 @@ function download_from_cams {
 
 function set_iso {
     echo "Setting ISO mode to 1 for left cam."
-    ptpcam --dev=$LEFTCAM --chdk="lua set_iso_mode(1)"
+    ptpcam --dev=$LEFTCAM --chdk="lua set_iso_real(50)"
     echo "Setting ISO mode to 1 for right cam."
-    ptpcam --dev=$RIGHTCAM --chdk="lua set_iso_mode(1)"
+    ptpcam --dev=$RIGHTCAM --chdk="lua set_iso_real(50)"
 }
 
 # The action starts here
