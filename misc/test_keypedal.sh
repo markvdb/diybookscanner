@@ -106,6 +106,16 @@ function set_iso {
     ptpcam --dev=$RIGHTCAM --chdk="lua set_iso_real(50)"
 }
 
+function set_shutterspeed {
+    for cam in $LEFTCAM $RIGHTCAM; do {
+      echo "Disabling neutrality density filter for $cam. See http://chdk.wikia.com/wiki/ND_Filter."
+      ptpcam --dev=$cam --chdk="luar set_nd_filter(2)"
+      echo "Setting lower shutter speed."
+      ptpcam --dev=$cam --chdk="luar set_tv96(480)"
+      sleep 2s
+    }
+}
+
 # The action starts here
 
 detect_cams
@@ -114,6 +124,7 @@ switch_to_record_mode
 set_zoom
 flash_off
 set_iso
+set_shutterspeed
 
 echo "Starting foot pedal loop..."
 $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
