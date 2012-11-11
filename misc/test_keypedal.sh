@@ -107,13 +107,16 @@ function set_iso {
 }
 
 function set_shutterspeed {
-    for cam in $LEFTCAM $RIGHTCAM; do {
-      echo "Disabling neutrality density filter for $cam. See http://chdk.wikia.com/wiki/ND_Filter."
-      ptpcam --dev=$cam --chdk="luar set_nd_filter(2)"
-      echo "Setting lower shutter speed."
-      ptpcam --dev=$cam --chdk="luar set_tv96(480)"
-      sleep 2s
-    }
+    echo "Disabling neutrality density filter for $LEFTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
+    ptpcam --dev=$LEFTCAM --chdk="luar set_nd_filter(2)"
+    echo "Setting lower shutter speed."
+    ptpcam --dev=$LEFTCAM --chdk="luar set_tv96(480)"
+    sleep 2s
+    echo "Disabling neutrality density filter for $RIGHTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
+    ptpcam --dev=$RIGHTCAM --chdk="luar set_nd_filter(2)"
+    echo "Setting lower shutter speed."
+    ptpcam --dev=$RIGHTCAM --chdk="luar set_tv96(480)"
+    sleep 2s
 }
 
 # The action starts here
