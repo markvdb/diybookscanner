@@ -106,7 +106,7 @@ function set_iso {
     ptpcam --dev=$RIGHTCAM --chdk="lua set_iso_real(50)"
 }
 
-function set_shutterspeed {
+function set_ndfilter {
     echo "Disabling neutrality density filter for $LEFTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
     ptpcam --dev=$LEFTCAM --chdk="luar set_nd_filter(2)"
     echo "Disabling neutrality density filter for $RIGHTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
@@ -121,7 +121,7 @@ switch_to_record_mode
 set_zoom
 flash_off
 set_iso
-set_shutterspeed
+set_ndfilter
 
 echo "Starting foot pedal loop..."
 $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
@@ -134,6 +134,7 @@ do
     echo "Shooting with cameras $LEFTCAM (left) and $RIGHTCAM (right)"
     # TODO: try to make safely switching cameras faster: chdkptp with multicam module? lua tricks? (multiple seconds wait between triggering cams necessary now)
     # shutter speed needs to be set before every shot
+    set_iso
     $PTPCAM --dev=$LEFTCAM --chdk="luar set_tv96(320)"
     $PTPCAM --dev=$LEFTCAM --chdk='lua shoot()'
     sleep 2s
