@@ -109,14 +109,8 @@ function set_iso {
 function set_shutterspeed {
     echo "Disabling neutrality density filter for $LEFTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
     ptpcam --dev=$LEFTCAM --chdk="luar set_nd_filter(2)"
-    echo "Setting lower shutter speed."
-    ptpcam --dev=$LEFTCAM --chdk="luar set_tv96(480)"
-    sleep 2s
     echo "Disabling neutrality density filter for $RIGHTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
     ptpcam --dev=$RIGHTCAM --chdk="luar set_nd_filter(2)"
-    echo "Setting lower shutter speed."
-    ptpcam --dev=$RIGHTCAM --chdk="luar set_tv96(480)"
-    sleep 2s
 }
 
 # The action starts here
@@ -138,9 +132,13 @@ do
   if [ "$shoot" == "b" ]; then
     echo "Key pressed."
     echo "Shooting with cameras $LEFTCAM (left) and $RIGHTCAM (right)"
-    # TODO: try to make safely switching cameras faster: chdkptp? lua tricks? (multiple seconds wait between triggering cams necessary now)
+    # TODO: try to make safely switching cameras faster: chdkptp with multicam module? lua tricks? (multiple seconds wait between triggering cams necessary now)
+    # shutter speed needs to be set before every shot
+    $PTPCAM --dev=$LEFTCAM --chdk="luar set_tv96(320)"
     $PTPCAM --dev=$LEFTCAM --chdk='lua shoot()'
     sleep 2s
+    # shutter speed needs to be set before every shot
+    $PTPCAM --dev=$RIGHTCAM --chdk="luar set_tv96(320)"
     $PTPCAM --dev=$RIGHTCAM --chdk='lua shoot()'
     sleep 2s
     #$PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(4)' && sleep 0.5
