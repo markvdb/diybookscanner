@@ -3,6 +3,7 @@
 LANG=C
 PTPCAM='/usr/bin/ptpcam'
 TMOUT=15
+TMOUT2=2
 TIMESTAMP=$(date +%Y%m%d%H%M)
 
 function detect_cams {
@@ -127,29 +128,39 @@ echo "Starting foot pedal loop..."
 $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
 while true
 do
-  # watch foot pedal if it is pressed
-  read -n1 shoot
-  if [ "$shoot" == "b" ]; then
-    echo "Key pressed."
-    echo "Shooting with cameras $LEFTCAM (left) and $RIGHTCAM (right)"
-    # TODO: try to make safely switching cameras faster: chdkptp with multicam module? lua tricks? (multiple seconds wait between triggering cams necessary now)
-    # shutter speed needs to be set before every shot
-    set_iso
-    $PTPCAM --dev=$LEFTCAM --chdk="luar set_tv96(320)"
-    $PTPCAM --dev=$LEFTCAM --chdk='lua shoot()'
-    sleep 2s
-    # shutter speed needs to be set before every shot
-    $PTPCAM --dev=$RIGHTCAM --chdk="luar set_tv96(320)"
-    $PTPCAM --dev=$RIGHTCAM --chdk='lua shoot()'
-    sleep 2s
-    #$PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(4)' && sleep 0.5
-    #$PTPCAM --dev=$RIGHTCAM --chdk='lua play_sound(4)' && sleep 0.5
-  elif [ -z "$shoot" ]; then
-    echo "Foot pedal not pressed for $TMOUT seconds."
-    download_from_cams
-    delete_from_cams
-    echo "Quitting"
-    exit 
+  read -n1 press1
+  if [ "$press1" == "b" ]; then
+    echo "Pedal pressed first time."
+    read -n1 -t$TMOUT2 press2
+    if [ -z "$press2" ]; then
+      # Shooting loop
+      echo "Pedal pressed once in two seconds. Starting shooting loop..."
+      while true; do
+        # watch foot pedal if it is pressed
+	read -n1 shoot
+	if [ "$shoot" == "b" ]; then
+	  echo "Key pressed."
+	  echo "Shooting with cameras $LEFTCAM (left) and $RIGHTCAM (right)"
+	  # TODO: try to make safely switching cameras faster: chdkptp with multicam module? lua tricks? (multiple seconds wait between triggering cams necessary now)
+	  # shutter speed needs to be set before every shot
+	  set_iso
+	  $PTPCAM --dev=$LEFTCAM --chdk="luar set_tv96(320)"
+	  $PTPCAM --dev=$LEFTCAM --chdk='lua shoot()'
+	  sleep 2s
+	  # shutter speed needs to be set before every shot
+	  $PTPCAM --dev=$RIGHTCAM --chdk="luar set_tv96(320)"
+	  $PTPCAM --dev=$RIGHTCAM --chdk='lua shoot()'
+	  sleep 2s
+	elif [ -z "$shoot" ]; then
+	  echo "Foot pedal not pressed for $TMOUT seconds. Falling back to outer loop. Press once for a new shooting loop, twice to download and delete from cameras."
+        fi
+      done # end shooting loop 
+    elif [ "$press2" == "b" ]; then
+      echo "Pedal pressed twice in two seconds. Downloading and deleting from cameras."
+      download_from_cams
+      delete_from_cams
+      echo "Dowloaded and deleted from cameras. Back to outer loop. Press once for a new shooting loop."
+    fi
   fi
 done
 
