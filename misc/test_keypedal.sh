@@ -4,7 +4,6 @@ LANG=C
 PTPCAM='/usr/bin/ptpcam'
 TMOUT=15
 TMOUT2=2
-TIMESTAMP=$(date +%Y%m%d%H%M)
 
 function detect_cams {
   CAMS=$(gphoto2 --auto-detect|grep usb| wc -l)
@@ -88,6 +87,7 @@ function flash_off {
 }
 
 function download_from_cams {
+    TIMESTAMP=$(date +%Y%m%d%H%M)
     echo "Downloading images from $CAM1..."
     mkdir -p ~/bookscan_$TIMESTAMP/left ~/bookscan_$TIMESTAMP/right
     cd ~/bookscan_$TIMESTAMP/left
@@ -101,17 +101,17 @@ function download_from_cams {
 }
 
 function set_iso {
-    echo "Setting ISO mode to 1 for left cam."
+    #echo "Setting ISO mode to 1 for left cam."
     ptpcam --dev=$LEFTCAM --chdk="lua set_iso_real(50)"
-    echo "Setting ISO mode to 1 for right cam."
+    #echo "Setting ISO mode to 1 for right cam."
     ptpcam --dev=$RIGHTCAM --chdk="lua set_iso_real(50)"
 }
 
 function set_ndfilter {
-    echo "Disabling neutrality density filter for $LEFTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
+    #echo "Disabling neutrality density filter for $LEFTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
     ptpcam --dev=$LEFTCAM --chdk="luar set_nd_filter(2)"
     echo "Disabling neutrality density filter for $RIGHTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
-    ptpcam --dev=$RIGHTCAM --chdk="luar set_nd_filter(2)"
+    #ptpcam --dev=$RIGHTCAM --chdk="luar set_nd_filter(2)"
 }
 
 # The action starts here
@@ -124,10 +124,10 @@ flash_off
 set_iso
 set_ndfilter
 
-echo "Starting foot pedal loop..."
 $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
 while true
 do
+  echo "In outer foot pedal loop. Press once for shooting, twice for downloading and deleting from cameras."
   read -n1 press1
   if [ "$press1" == "b" ]; then
     echo "Pedal pressed first time."
@@ -135,6 +135,7 @@ do
     if [ -z "$press2" ]; then
       # Shooting loop
       echo "Pedal pressed once in two seconds. Starting shooting loop..."
+      $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
       while true; do
         # watch foot pedal if it is pressed
 	read -n1 shoot
@@ -152,7 +153,7 @@ do
 	  $PTPCAM --dev=$RIGHTCAM --chdk='lua shoot()'
 	  sleep 2s
 	elif [ -z "$shoot" ]; then
-	  echo "Foot pedal not pressed for $TMOUT seconds. Falling back to outer loop. Press once for a new shooting loop, twice to download and delete from cameras."
+	  echo "Foot pedal not pressed for $TMOUT seconds. Falling back to outer foot pedal loop."
           break
         fi
       done # end shooting loop 
@@ -160,7 +161,7 @@ do
       echo "Pedal pressed twice in two seconds. Downloading and deleting from cameras."
       download_from_cams
       delete_from_cams
-      echo "Dowloaded and deleted from cameras. Back to outer loop. Press once for a new shooting loop."
+      echo "Dowloaded and deleted from cameras. Back to beginning of outer loop."
     fi
   fi
 done
