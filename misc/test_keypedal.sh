@@ -153,6 +153,7 @@ do
 	  sleep 2s
 	elif [ -z "$shoot" ]; then
 	  echo "Foot pedal not pressed for $TMOUT seconds. Falling back to outer loop. Press once for a new shooting loop, twice to download and delete from cameras."
+          break
         fi
       done # end shooting loop 
     elif [ "$press2" == "b" ]; then
