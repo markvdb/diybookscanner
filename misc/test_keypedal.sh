@@ -4,6 +4,7 @@ LANG=C
 PTPCAM='/usr/bin/ptpcam'
 TMOUT=15
 TMOUT2=2
+DOWNLOADDIR='/var/autofs/removable/stick'
 
 function detect_cams {
   CAMS=$(gphoto2 --auto-detect|grep usb| wc -l)
@@ -89,15 +90,16 @@ function flash_off {
 function download_from_cams {
     TIMESTAMP=$(date +%Y%m%d%H%M)
     echo "Downloading images from $CAM1..."
-    mkdir -p ~/bookscan_$TIMESTAMP/left ~/bookscan_$TIMESTAMP/right
-    cd ~/bookscan_$TIMESTAMP/left
+    mkdir -p $DOWNLOADDIR/bookscan_$TIMESTAMP/left $DOWNLOADDIR/bookscan_$TIMESTAMP/right
+    cd $DOWNLOADDIR/bookscan_$TIMESTAMP/left
     $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(6)'
     # gphoto2 processes end with -1 unexpected result even though everything seems to be fine -> hack: true gives exit status 0
     gphoto2 --port $LEFTCAMLONG -P A/store_00010001/DCIM/; true
     cd ../right
     echo "Downloading images from $CAM2"
     gphoto2 --port $RIGHTCAMLONG -P A/store_00010001/DCIM/; true 
-    cd ..
+    # Make sure to jump out of the autofs directory
+    cd
 }
 
 function set_iso {
@@ -124,10 +126,11 @@ flash_off
 set_iso
 set_ndfilter
 
-$PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
 while true
 do
   echo "In outer foot pedal loop. Press once for shooting, twice for downloading and deleting from cameras."
+  # Play sound 0 when ready
+  $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
   read -n1 press1
   if [ "$press1" == "b" ]; then
     echo "Pedal pressed first time."
@@ -135,6 +138,7 @@ do
     if [ -z "$press2" ]; then
       # Shooting loop
       echo "Pedal pressed once in two seconds. Starting shooting loop..."
+      # Play sound 0 when ready
       $PTPCAM --dev=$LEFTCAM --chdk='lua play_sound(0)'
       while true; do
         # watch foot pedal if it is pressed
