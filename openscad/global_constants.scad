@@ -27,4 +27,7 @@ metrictomedieval=.0039370078;
 // units="medieval";
 units="metric";
 
+// Light plate construction
+light_plate_support_height=1651;//6.5"
+light_plate_support_width=3662.68;//14.42
 
