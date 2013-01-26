@@ -3,8 +3,8 @@
 
 include <global_constants.scad>;
 
-module light_plate_support(light_plate_support_width){
-  light_plate_support_width=3662.68;//14.42
+module light_plate_support(){
+
   x1=180;//0.71"
   x2=317.5;//1.25""
   x3=434.34;//1.71"
@@ -15,7 +15,6 @@ module light_plate_support(light_plate_support_width){
   y2=1206.5;//4.75"
   y3=1333.5;//5.25"
   y4=1468.12;//5.78"
-  light_plate_support_height=1651;//6.5"
 
   module light_plate_support_half(){
 
@@ -35,5 +34,3 @@ module light_plate_support(light_plate_support_width){
     }
   }
 }
-
-//light_plate_support();
