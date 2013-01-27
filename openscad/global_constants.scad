@@ -19,7 +19,7 @@ module bolt_circle(x,y){
   translate([x,y]) linear_extrude(height=sheet_z) circle(bolt_circle_r);
 }
 
-//Conversion
+// Conversion
 medievaltometric=254;
 metrictomedieval=.0039370078;
 
@@ -27,4 +27,14 @@ metrictomedieval=.0039370078;
 // units="medieval";
 units="metric";
 
+// Light plate construction
+light_plate_support_height=1651;//6.5"
+light_plate_support_width=3662.68;//14.42
 
+// Base construction
+large_support_depth=3667.4552;//14.4388"
+large_support_height=4254.5;//16.75"
+small_support_depth=1460.5;
+small_support_height=4254.5;
+front_brace_width=5842+2*sheet_z;
+base_brace_edge_depth=53;
