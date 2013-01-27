@@ -15,5 +15,5 @@ module back_brace(){
   brace(body_x,body_y, body_y_e, body_y_i, body_cutout_x_e, body_cutout_x_i, edge_x, edge_z);
 }
 
-if (units=="metric") back_brace();
-if (units=="medieval") scale([metrictomedieval,metrictomedieval,metrictomedieval]) back_brace();
+//if (units=="metric") back_brace();
+//if (units=="medieval") scale([metrictomedieval,metrictomedieval,metrictomedieval]) back_brace();
