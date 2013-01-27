@@ -1,8 +1,8 @@
 // To render the DXF file from the command line:
 // openscad -x front_brace.dxf -D'units="metric"' front_brace.scad
 
-include <global_constants.scad>
-include <braces.scad>
+include <global_constants.scad>;
+include <braces.scad>;
 
 module front_brace(){
   body_x=5842;
@@ -16,5 +16,5 @@ module front_brace(){
   brace(body_x,body_y, body_y_e, body_y_i, body_cutout_x_e, body_cutout_x_i, edge_x, edge_z);
 }
 
-if (units=="metric") front_brace();
-if (units=="medieval") scale([metrictomedieval,metrictomedieval,metrictomedieval]) front_brace();
+//if (units=="metric") front_brace();
+//if (units=="medieval") scale([metrictomedieval,metrictomedieval,metrictomedieval]) front_brace();
