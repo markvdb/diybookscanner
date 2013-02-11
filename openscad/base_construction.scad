@@ -1,3 +1,6 @@
+// To render the DXF file from the command line:
+// openscad -x small_support.dxf -D'units="metric"' base_construction.scad
+
 include <global_constants.scad>;
 include <small_support.scad>;
 include <large_support.scad>;
