@@ -1,7 +1,8 @@
 This is an attempt at 3d modelling the diybookscanner.org kit as sold by http://diybookscanner.eu .
 
 # Status
- * 60% of wooden parts modelled 
+ * 70% of wooden parts modelled
+ * partial assembly of wooden parts 
  * no other parts modelled yet
 
 # Goals:
