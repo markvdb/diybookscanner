@@ -111,7 +111,7 @@ function set_ndfilter {
     #echo "Disabling neutrality density filter for $LEFTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
     ptpcam --dev=$LEFTCAM --chdk="luar set_nd_filter(2)"
     echo "Disabling neutrality density filter for $RIGHTCAM. See http://chdk.wikia.com/wiki/ND_Filter."
-    #ptpcam --dev=$RIGHTCAM --chdk="luar set_nd_filter(2)"
+    ptpcam --dev=$RIGHTCAM --chdk="luar set_nd_filter(2)"
 }
 
 # The action starts here
