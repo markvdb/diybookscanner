@@ -4,7 +4,7 @@ LANG=C
 TMOUT=15
 TMOUT2=2
 
-CHDKPTP='/home/pi/camera2/script.sh'
+CHDKPTP='/usr/bin/chdkptp'
 CAM1_USBBUS=''
 CAM1_USBID=''
 CAM1_ORIENTATION=''
