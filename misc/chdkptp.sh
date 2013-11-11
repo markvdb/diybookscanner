@@ -12,9 +12,22 @@ CAM2_USBBUS=''
 CAM2_USBID=''
 CAM2_ORIENTATION=''
 
+# Default download dir for scans
+SCANS_BASEDIR='~'
+TIMESTAMP=''
+# Where the actual book being scanned goes
+SCANS_DIR=''
+
 #TODO ZOOMLEVEL=3
 #TODO ISO=50
 #TODO experiment with dng versus jpg quality, speed, reliability
+
+function create_scans_dir {
+  TIMESTAMP=$(date +%Y%m%d%H%M)
+  SCANS_DIR= "$SCANS_BASEDIR/bookscan_$TIMESTAMP"
+  mkdir -p $SCANS_DIR/left
+  mkdir -p $SCANS_DIR/right
+}
 
 function detect_cams {
   CAMS=$($CHDKPTP -elist)
@@ -82,13 +95,17 @@ $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e'lua play_sound(0)'
 while true
 do
 echo "In outer foot pedal loop.\n
-  Press once to start scanning a new book.\n
-  Press Ctrl-C to stop the scanning loop."
+  Press b key or foot pedal once (shortly!) to start scanning a new book.\n
+  Press b key or foot pedal twice (shortly!) to (TODO). 
+  Press Ctrl-C to stop this script."
   read -n1 press1
   if [ "$press1" == "b" ]; then
 echo "Pedal pressed first time."
     read -n1 -t$TMOUT2 press2
     if [ -z "$press2" ]; then
+      
+      create_scans_dir
+      
       # Shooting loop
       echo "Pedal pressed once in two seconds. Starting shooting loop..."
       $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e'lua play_sound(0)'
@@ -102,11 +119,11 @@ echo "Pedal pressed first time."
          # shutter speed needs to be set before every shot
          set_iso
          $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e"luar set_tv96(320)"
-         $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -eremoteshoot
+         $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e"remoteshoot $SCANS_DIR/$CAM1_ORIENTATION"
          sleep 2s
          # shutter speed needs to be set before every shot
          $CHDKPTP -e"connect -b=$CAM2_USBBUS -d=$CAM2_USBID" -e"luar set_tv96(320)"
-         $CHDKPTP -e"connect -b=$CAM2_USBBUS -d=$CAM2_USBID" -eremoteshoot
+         $CHDKPTP -e"connect -b=$CAM2_USBBUS -d=$CAM2_USBID" -e"remoteshoot $SCANS_DIR/$CAM2_ORIENTATION"
          sleep 2s
         elif [ -z "$shoot" ]; then
          echo "Foot pedal not pressed for $TMOUT seconds. Falling back to outer foot pedal loop."
