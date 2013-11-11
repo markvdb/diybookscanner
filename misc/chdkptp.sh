@@ -81,7 +81,9 @@ set_ndfilter
 $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e'lua play_sound(0)'
 while true
 do
-echo "In outer foot pedal loop. Press once for shooting, twice for downloading and deleting from cameras."
+echo "In outer foot pedal loop.\n
+  Press once to start scanning a new book.\n
+  Press Ctrl-C to stop the scanning loop."
   read -n1 press1
   if [ "$press1" == "b" ]; then
 echo "Pedal pressed first time."
@@ -113,9 +115,6 @@ fi
 done # end shooting loop
     elif [ "$press2" == "b" ]; then
 echo "Pedal pressed twice in two seconds. Downloading and deleting from cameras."
-      download_from_cams
-      delete_from_cams
-      echo "Dowloaded and deleted from cameras. Back to beginning of outer loop."
     fi
 fi
 done
