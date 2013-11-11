@@ -1,0 +1,8 @@
+# This script is to be put in /usr/bin.
+# It assumes that the chdkptp binary _and_ its required libraries are in ~/chdkptp .
+# See https://github.com/markvdb/diybookscanner/wiki/chdkptp for more information.
+
+CHDKPTP_DIR=~/chdkptp
+export LD_LIBRARY_PATH=$CHDKPTP_DIR/libs/cd:$CHDKPTP_DIR/libs/iup
+export LUA_PATH="$CHDKPTP_DIR/lua/?.lua"
+"$CHDKPTP_DIR/chdkptp" "$@"
