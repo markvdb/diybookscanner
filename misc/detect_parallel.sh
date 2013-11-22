@@ -41,6 +41,26 @@ function detect_cams {
   echo ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}
 }
 
+function set_focus {
+  CAMS=$($CHDKPTP -elist)
+  CAMCOUNT=$(echo "$CAMS"|wc -l)
+  for ((id=1; id<=$CAMCOUNT; id++));do
+    echo "Setting focus for camera where id= $id"
+    CAM_USBBUS[$id]=$($CHDKPTP -elist|sed -n ""$id"p"| cut -f4 -d' '| sed -e 's/b\=//g')
+    #echo ${CAM_USBBUS[$id]}
+    CAM_USBID[$id]=$($CHDKPTP -elist|sed -n ""$id"p"| cut -f5 -d' '| sed -e 's/d\=//g')
+    #echo ${CAM_USBID[$id]}
+#$CHDKPTP -e"connect -b=$CAM_USBBUS -d=$CAM_USBID" -e"lua set_focus(300)"
+
+    time $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -e'lua set_focus(300)'
+    time CAM_ORIENTATION[$id]=$(cat /tmp/orientation.txt)
+    time rm -rf /tmp/orientation.txt
+  done
+  echo ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}
+}
+ 
+######################################
+
 function switch_to_record_mode {
   echo "Switching cameras to record mode..."
   $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -erec
@@ -53,18 +73,53 @@ function set_flash {
   $CHDKPTP -e"connect -b=$CAM2_USBBUS -d=$CAM2_USBID" -e'lua while(get_flash_mode()<2) do click("right") end'
 }
 
-function set_iso {
-  echo "Setting camera 1 iso..."
-  $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e'lua set_iso_real(50)'
-  echo "Setting camera 2 iso..."
-  $CHDKPTP -e"connect -b=$CAM2_USBBUS -d=$CAM2_USBID" -e'lua set_iso_real(50)'
+#function set_iso {
+#  echo "Setting camera 1 iso..."
+#  $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e'lua set_iso_real(50)'
+#  echo "Setting camera 2 iso..."
+#echo $CAM2_USBBUS
+#echo $CAM2_USBID
+#  $CHDKPTP -e"connect -b=$CAM2_USBBUS -d=$CAM2_USBID" -e'lua set_iso_real(50)'
+#}
+
+function set_iso_loop {
+  CAMS=$($CHDKPTP -elist)
+  CAMCOUNT=$(echo "$CAMS"|wc -l)
+  for ((id=1; id<=$CAMCOUNT; id++));do
+    echo "Setting iso for camera where id= $id"
+    CAM_USBBUS[$id]=$($CHDKPTP -elist|sed -n ""$id"p"| cut -f4 -d' '| sed -e 's/b\=//g')
+    #echo ${CAM_USBBUS[$id]}
+    CAM_USBID[$id]=$($CHDKPTP -elist|sed -n ""$id"p"| cut -f5 -d' '| sed -e 's/d\=//g')
+    #echo ${CAM_USBID[$id]}
+#$CHDKPTP -e"connect -b=$CAM_USBBUS -d=$CAM_USBID" -e"lua set_focus(300)"
+
+    time $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -e'lua set_iso_real(50)'
+  done
+  echo ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}
 }
+ 
+function set_flash_loop {
+  CAMS=$($CHDKPTP -elist)
+  CAMCOUNT=$(echo "$CAMS"|wc -l)
+  for ((id=1; id<=$CAMCOUNT; id++));do
+    echo "Setting flash for camera where id= $id"
+    CAM_USBBUS[$id]=$($CHDKPTP -elist|sed -n ""$id"p"| cut -f4 -d' '| sed -e 's/b\=//g')
+    #echo ${CAM_USBBUS[$id]}
+    CAM_USBID[$id]=$($CHDKPTP -elist|sed -n ""$id"p"| cut -f5 -d' '| sed -e 's/d\=//g')
+    #echo ${CAM_USBID[$id]}
+#$CHDKPTP -e"connect -b=$CAM_USBBUS -d=$CAM_USBID" -e"lua set_focus(300)"
+ 
+    time $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -e'lua while(get_flash_mode()<2) do click("right") end'
+  done
+  echo ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}
+}
+
 
 function set_ndfilter {
   echo "Setting camera 1 nd filter off..."
   $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e'lua set_nd_filter(2)'
   echo "Setting camera 2 nd filter off..."
-  $CHDKPTP -e"connect -b=$CAM2_USBBUS -d=$CAM2_USBID" -e'lua set_nd_filter(2))'
+  $CHDKPTP -e"connect -b=$CAM2_USBBUS -d=$CAM2_USBID" -e'lua set_nd_filter(2)'
 }
 
 function set_zoom {
@@ -80,7 +135,7 @@ function set_zoom {
 function shoot_cam {
   echo "CAM_USBBUS CAM_USBID CAM_ORIENTATION ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}"
   echo "$1 is dollar een"
-  $id=$1
+#  $id=$1
   $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -e"luar set_tv96(320)"
   $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -eremoteshoot
 }
@@ -88,10 +143,10 @@ function shoot_cam {
 detect_cams
 switch_to_record_mode
 set_zoom
-set_flash
-set_iso
+set_flash_loop
+set_iso_loop
 set_ndfilter
-
+#set_focus
 
 $CHDKPTP -e"connect -b=$CAM1_USBBUS -d=$CAM1_USBID" -e'lua play_sound(0)'
 while true
@@ -113,11 +168,20 @@ echo "Pedal pressed first time."
          echo "Shooting with cameras left and right"
          # TODO: try to make safely switching cameras faster: chdkptp with multicam module? lua tricks? (multiple seconds wait between triggering cams necessary now)
          # shutter speed needs to be set before every shot
-         set_iso
+         #set_iso
          #parallel
          export -f shoot_cam
-         export 
-         parallel --gnu shoot_cam ::: 2 1
+         export CAM_ORIENTATION
+	export CAM_USBID
+	export CHDKPTP
+	export CAM_USBBUS 
+#  echo "CAM_USBBUS CAM_USBID CAM_ORIENTATION ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}"
+	#  two threads, doesn't work 
+         #parallel -P 2 --gnu shoot_cam ::: 2 1
+
+        # parallel --gnu shoot_cam ::: 2 1
+	shoot_cam 2 &
+	shoot_cam 1 &
         elif [ -z "$shoot" ]; then
          echo "Foot pedal not pressed for $TMOUT seconds. Falling back to outer foot pedal loop."
           break
