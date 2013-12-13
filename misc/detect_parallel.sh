@@ -34,10 +34,11 @@ function detect_cams {
     #echo ${CAM_USBBUS[$id]}
     CAM_USBID[$id]=$($CHDKPTP -elist|sed -n ""$id"p"| cut -f5 -d' '| sed -e 's/d\=//g')
     #echo ${CAM_USBID[$id]}
-    time $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -e'download orientation.txt /tmp'
-    time CAM_ORIENTATION[$id]=$(cat /tmp/orientation.txt)
-    time rm -rf /tmp/orientation.txt
+    $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -e'download orientation.txt /tmp'
+    CAM_ORIENTATION[$id]=$(cat /tmp/orientation.txt)
+    rm -rf /tmp/orientation.txt
   done
+  echo "CAMERA DETECTED:"
   echo ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}
 }
 
@@ -135,7 +136,7 @@ function set_zoom {
 function shoot_cam {
   echo "CAM_USBBUS CAM_USBID CAM_ORIENTATION ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}"
   echo "$1 is dollar een"
-#  $id=$1
+  id=$1
   $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -e"luar set_tv96(320)"
   $CHDKPTP -e"connect -b=${CAM_USBBUS[$id]} -d=${CAM_USBID[$id]}" -eremoteshoot
 }
@@ -169,19 +170,9 @@ echo "Pedal pressed first time."
          # TODO: try to make safely switching cameras faster: chdkptp with multicam module? lua tricks? (multiple seconds wait between triggering cams necessary now)
          # shutter speed needs to be set before every shot
          #set_iso
-         #parallel
-         export -f shoot_cam
-         export CAM_ORIENTATION
-	export CAM_USBID
-	export CHDKPTP
-	export CAM_USBBUS 
 #  echo "CAM_USBBUS CAM_USBID CAM_ORIENTATION ${CAM_USBBUS[*]} ${CAM_USBID[*]} ${CAM_ORIENTATION[*]}"
-	#  two threads, doesn't work 
-         #parallel -P 2 --gnu shoot_cam ::: 2 1
-
-        # parallel --gnu shoot_cam ::: 2 1
-	shoot_cam 2 &
-	shoot_cam 1 &
+	shoot_cam 2 
+	shoot_cam 1 
         elif [ -z "$shoot" ]; then
          echo "Foot pedal not pressed for $TMOUT seconds. Falling back to outer foot pedal loop."
           break
