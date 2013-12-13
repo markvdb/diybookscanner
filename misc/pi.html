@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<script>
+  // helper function: log message to screen
+  function log(msg) {
+	var old = document.getElementById('log').innerText;
+    document.getElementById('log').innerText = msg + '\n'+old;
+  }
+
+  // setup websocket with callbacks
+  var ws = new WebSocket('ws://10.154.5.239:8080/?url=test');
+  ws.onopen = function() {
+    log('CONNECT');
+  };
+  ws.onclose = function() {
+    log('DISCONNECT');
+  };
+  ws.onmessage = function(event) {
+    log('MESSAGE: ' + event.data);
+  };
+
+function sendText() {
+ws.send(document.getElementById('tekstvak').value);
+}
+</script>
+<input type="text" id="tekstvak">
+<input type="button" onclick="sendText();">
+
+<pre id="log"></pre>
