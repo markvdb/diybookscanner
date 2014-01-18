@@ -6,7 +6,7 @@ This _was_ the official git repository for diybookscanner.org. It still contains
 Contents
 --------
 * openscad/ : conversion of the 0.9.20 diybookscanner.org design to openscad (work in progress)
-* misc/     : a simple electronic triggering script for use with a foot pedal, and more
+* misc/     : a simple electronic triggering script for use with a foot pedal, and more . Will soon be superseded by https://github.com/diybookscanner/spreads .
 * wiki (branch) : the official diybookscanner.org wiki
 
 TODO
