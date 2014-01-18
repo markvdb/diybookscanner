@@ -1,7 +1,7 @@
 diybookscanner
 ==============
 
-This is the official git repository for diybookscanner.org.
+This _was_ the official git repository for diybookscanner.org. It still contains interesting information.
 
 Contents
 --------
