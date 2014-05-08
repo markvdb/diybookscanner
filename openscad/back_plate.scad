@@ -1,8 +1,6 @@
 // To render the DXF file from the command line:
 // openscad -x back_plate.dxf -D'units="metric"' back_plate.scad
 
-// TODO: clean up parameters, hole for connecting bars, bracket cutouts for glass
-
 include <global_constants.scad>;
 
 main_rectangle_x=12.95*254;
@@ -33,6 +31,8 @@ module corner_rectangle(){
   difference() {
     square([corner_rectangle_x,corner_rectangle_y]);
     square([corner_rectangle_rectangular_cutout_x,corner_rectangle_bottom_rectangular_cutout_y]);
+    //hole for small brace between front and back plate
+    translate([2.25*254,1.75*254,0]) square([0.5*254,1.5*254]);
   }
 }
 
@@ -47,6 +47,9 @@ module back_plate_half(){
     translate([0,main_rectangle_y-top_corner_height,0]) top_corner_cutout();
     //big hole (fixed size)
     translate([main_rectangle_x,3.6315*254,0]) polygon([[0,0],[-8.5*254,6*254],[-6*254,11.5*254],[0,13.5*254]]);
+    //hole for large brace between front and back plate
+    translate([2.7625*254,main_rectangle_y-1.7788*254,0]) rotate(230) square([0.5*254,2.5*254]);
+
   }
 }
 
@@ -57,6 +60,5 @@ module back_plate_full(){
     translate([main_rectangle_x*2,0,0]) mirror([1,0,0]) back_plate_half();
   }
 }
-
 
 linear_extrude(sheet_z) mirror([1,0,0]) back_plate_full();
