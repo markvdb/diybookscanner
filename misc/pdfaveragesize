@@ -1,0 +1,25 @@
+#! /bin/bash
+
+# Author:       Mark Van den Borre <mark@markvdb.be>
+# License:      AGPL v3+
+# Goal:         list the average file size per page of a series of pdf documents
+# Usage:        pdfaveragesize <directory>
+# Dependencies: pdfinfo (Debian package: poppler-utils)
+# WARNING:      Very quick and dirty hack.
+
+totalpages=0
+totalsize=0
+totalsizeperpage=0
+
+IFS=$(echo -en "\n\b")
+for f in $(find $1 -iname "*.pdf"); do
+  pages=$(pdfinfo "$f"| tail -n7|grep Pages | tr -s [:blank:] | cut -d' ' -f2)
+  size=$(pdfinfo "$f" | tail -n7| grep bytes | tr -s [:blank:] | cut -d' ' -f3)
+  sizeperpage=$(echo "scale=2;$size/$pages/1024"| bc)
+  echo -e "$pages p\t  $size b\taverage: $sizeperpage Kb\t$f"
+  totalpages=$(echo "$totalpages+$pages"| bc)
+  totalsize=$(echo "$totalsize+$size"| bc)
+done
+
+totalsizeperpage=$(echo "$totalsize/$totalpages/1024"|bc)
+echo -e "TOTAL: $totalpages p\t $size b\taverage: $totalsizeperpage Kb"
